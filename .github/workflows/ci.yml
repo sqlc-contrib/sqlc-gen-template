@@ -11,6 +11,13 @@ on:
   pull_request:
     branches: [main]
 
+# Serialize runs targeting the same ref so octocov's auto-push back to main
+# doesn't race with parallel runs (e.g. a dependabot auto-merge landing
+# between checkout and octocov's git push → non-fast-forward).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
