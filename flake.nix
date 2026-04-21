@@ -32,20 +32,33 @@
             };
           });
 
-          wasm = pkgs.buildGoModule (common // {
-            pname = "sqlc-gen-template-wasm";
-            env = {
-              GOOS = "wasip1";
-              GOARCH = "wasm";
+          # buildGoModule's wrapped Go toolchain overrides GOOS/GOARCH at the
+          # toolchain level regardless of env, so cross-compilation to wasip1 needs
+          # a mkDerivation that calls Go directly.  We reuse the vendor directory
+          # that buildGoModule already fetched (common.goModules passthru).
+          wasm =
+            let
+              goModules = (pkgs.buildGoModule common).goModules;
+            in
+            pkgs.stdenv.mkDerivation {
+              pname = "sqlc-gen-template-wasm";
+              inherit version;
+              src = pkgs.lib.cleanSource ./.;
+              nativeBuildInputs = [ pkgs.go ];
+              buildPhase = ''
+                export HOME=$TMPDIR
+                cp -r ${goModules} vendor
+                chmod -R u+w vendor
+                CGO_ENABLED=0 GOOS=wasip1 GOARCH=wasm \
+                  go build -mod=vendor -o sqlc-gen-template.wasm \
+                  ./cmd/sqlc-gen-template
+              '';
+              installPhase = ''
+                mkdir -p "$out/bin"
+                mv sqlc-gen-template.wasm "$out/bin/"
+              '';
+              doCheck = false;
             };
-            # buildGoModule's default install puts the binary in $out/bin.
-            # The wasip1/wasm build emits a .wasm extension automatically.
-            postInstall = ''
-              mv $out/bin/sqlc-gen-template $out/bin/sqlc-gen-template.wasm || true
-              test -f $out/bin/sqlc-gen-template.wasm
-            '';
-            doCheck = false;
-          });
         };
 
         devShells.default = pkgs.mkShell {
