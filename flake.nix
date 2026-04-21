@@ -19,8 +19,7 @@
           inherit version;
           src = pkgs.lib.cleanSource ./.;
           subPackages = [ "cmd/sqlc-gen-template" ];
-          # Populated via `nix build .#default --update-lock` on first build.
-          vendorHash = null;
+          vendorHash = "sha256-Xc+AVFZQfYz1mf8+zpIgeTppB6p22x0+20JiHnv2qgE=";
         };
       in
       {
