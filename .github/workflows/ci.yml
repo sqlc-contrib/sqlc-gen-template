@@ -11,13 +11,6 @@ on:
   pull_request:
     branches: [main]
 
-# Serialize runs targeting the same ref so octocov's auto-push back to main
-# doesn't race with parallel runs (e.g. a dependabot auto-merge landing
-# between checkout and octocov's git push → non-fast-forward).
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -63,7 +56,14 @@ jobs:
   build-release:
     needs: release
     if: ${{ needs.release.outputs.release_created }}
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            nix_system: x86_64-linux
+          - os: macos-14
+            nix_system: aarch64-darwin
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -74,19 +74,15 @@ jobs:
       - name: Setup Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v13
 
-      - name: Build WASM with Nix
-        run: nix build .#wasm
+      - name: Build with Nix
+        run: nix build . --system ${{ matrix.nix_system }}
 
       - name: Prepare Release Assets
         run: |
-          mkdir -p release
-          install -m 0644 result/bin/sqlc-gen-template.wasm release/sqlc-gen-template.wasm
-          cd release && sha256sum sqlc-gen-template.wasm > sqlc-gen-template.wasm.sha256
+          mkdir -p release && install -m 0755 result/bin/sqlc-gen-template release/sqlc-gen-template-${{ matrix.nix_system }}
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.release.outputs.tag_name }}
-          files: |
-            release/sqlc-gen-template.wasm
-            release/sqlc-gen-template.wasm.sha256
+          files: release/sqlc-gen-template-${{ matrix.nix_system }}

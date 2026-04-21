@@ -7,7 +7,7 @@
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![sqlc](https://img.shields.io/badge/sqlc-compatible-blue)](https://sqlc.dev)
 
-A [sqlc](https://sqlc.dev) WASM plugin that renders arbitrary code from
+A [sqlc](https://sqlc.dev) plugin that renders arbitrary code from
 user-supplied Go `text/template` files. Point it at a templates directory and
 it will render each `*.tmpl` file against sqlc's parsed catalog and queries.
 
@@ -20,7 +20,9 @@ partials, and cross-file includes.
 
 ## Features
 
-- WASM plugin — no local binary, pinned by sha256 in `sqlc.yaml`
+- Runs as a **process plugin** (native binary, reads templates from disk) or a
+  **WASM plugin** (sandboxed, no filesystem access — templates must be on disk
+  via process mode)
 - Directory walk discovers every `*.tmpl` under `templates_dir`
 - Filename templating — the output path is itself rendered as a template
 - Partials — files whose base name starts with `_` are parsed but not emitted
@@ -38,16 +40,55 @@ partials, and cross-file includes.
 
 ## Installation
 
-Pin the released `.wasm` artifact in `sqlc.yaml`. Grab the sha256 from the
-matching `.wasm.sha256` asset on the
-[release page](https://github.com/sqlc-contrib/sqlc-gen-template/releases).
+### Process mode (recommended — required for `templates_dir`)
+
+sqlc's WASM sandbox has **no filesystem access**, so reading templates from disk
+requires running the plugin as a native process.
+
+**Go projects** — add the binary as a `go tool` dependency:
+
+```bash
+go get -tool github.com/sqlc-contrib/sqlc-gen-template/cmd/sqlc-gen-template@latest
+```
+
+Then in `sqlc.yaml`:
+
+```yaml
+version: "2"
+plugins:
+  - name: template
+    process:
+      cmd: "go tool sqlc-gen-template"
+```
+
+**Other projects** — install the binary with Go and reference it by path:
+
+```bash
+go install github.com/sqlc-contrib/sqlc-gen-template/cmd/sqlc-gen-template@latest
+```
+
+```yaml
+version: "2"
+plugins:
+  - name: template
+    process:
+      cmd: "sqlc-gen-template"
+```
+
+### WASM mode
+
+WASM mode is supported for distribution convenience (no local binary needed),
+but because sqlc's WASM sandbox provides no filesystem access, the plugin
+**cannot read template files from disk** in this mode. `templates_dir` will
+always fail with `EBADF`. Only use WASM mode if you have a use case that does
+not require disk-based templates.
 
 ```yaml
 version: "2"
 plugins:
   - name: template
     wasm:
-      url: https://github.com/sqlc-contrib/sqlc-gen-template/releases/download/v0.1.0/sqlc-gen-template.wasm
+      url: https://github.com/sqlc-contrib/sqlc-gen-template/releases/download/v0.1.1/sqlc-gen-template.wasm
       sha256: <sha256 from the release assets>
 ```
 
@@ -241,11 +282,12 @@ type {{ pascalCase .Rel.Name | singular }} struct {
 
 ## Caveats
 
-- **No `formatter_cmd`.** WASI plugins cannot spawn processes. Format the
+- **Use process mode for `templates_dir`.** sqlc's WASM sandbox provides no
+  filesystem access; `os.Stat` / `filepath.WalkDir` return `EBADF` inside a
+  WASM plugin. `templates_dir` only works when the plugin runs as a native
+  process. See the [Installation](#installation) section.
+- **No `formatter_cmd`.** The plugin cannot spawn subprocesses. Format the
   generated output yourself (`go fmt ./...`, `prettier --write`, `rustfmt`, …).
-- **Filesystem access.** sqlc mounts the configuration directory into the
-  plugin's WASI sandbox. Relative `templates_dir` values resolve against that
-  directory; absolute paths pointing outside the mount will fail.
 - **Raw proto surface.** Template data is the sqlc SDK protobuf. The plugin
   pins a specific SDK version; field paths may shift across SDK bumps.
 
