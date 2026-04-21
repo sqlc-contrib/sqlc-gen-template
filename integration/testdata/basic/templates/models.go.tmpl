@@ -1,0 +1,8 @@
+// Generated from sqlc {{ .SqlcVersion }}.
+package models
+
+{{ range .Request.Catalog.Schemas -}}
+{{ range .Tables -}}
+type {{ pascalCase .Rel.Name }} struct{}
+{{ end -}}
+{{ end -}}

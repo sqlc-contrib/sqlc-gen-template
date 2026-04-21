@@ -1,0 +1,5 @@
+
+id: go=int32 py=int ts=number rust=i32
+email: go=string py=str ts=string rust=String
+tags: go=[]string py=List[str] ts=string[] rust=Vec<String>
+bio: go=*string py=Optional[str] ts=string | null rust=Option<String>

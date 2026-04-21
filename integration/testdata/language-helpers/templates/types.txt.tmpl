@@ -1,0 +1,7 @@
+{{- range .Request.Catalog.Schemas -}}
+{{- range .Tables -}}
+{{- range .Columns }}
+{{ .Name }}: go={{ goType . }} py={{ pyType . }} ts={{ tsType . }} rust={{ rustType . }}
+{{- end }}
+{{ end -}}
+{{ end -}}

@@ -1,0 +1,3 @@
+{{ range .Request.Queries -}}
+-- {{ .Name }} ({{ .Cmd }})
+{{ end -}}

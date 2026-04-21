@@ -1,0 +1,2 @@
+-- GetUser (:one)
+-- ListUsers (:many)

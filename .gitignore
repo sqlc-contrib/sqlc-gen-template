@@ -7,6 +7,12 @@
 *.dll
 *.so
 *.dylib
+*.wasm
+/bin/
+
+# Nix build outputs
+result
+result-*
 
 # Test binary, built with `go test -c`
 *.test
