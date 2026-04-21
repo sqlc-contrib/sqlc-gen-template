@@ -77,7 +77,7 @@ jobs:
           cd release && sha256sum sqlc-gen-template.wasm > sqlc-gen-template.wasm.sha256
 
       - name: Upload Release Assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.release.outputs.tag_name }}
           files: |
