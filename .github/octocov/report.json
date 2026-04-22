@@ -1,7 +1,7 @@
 {
   "repository": "sqlc-contrib/sqlc-gen-template",
   "ref": "refs/heads/main",
-  "commit": "e1aa1f8aabe4c06efa6285674cb2ee10ca1446fc",
+  "commit": "0cbe6086c034f1103db2e08ac4bddbcb3590ec63",
   "coverage": {
     "type": "statement",
     "format": "Go coverage",
@@ -2611,6 +2611,6 @@
       }
     ]
   },
-  "test_execution_time": 58000000000,
-  "timestamp": "2026-04-22T09:26:21.318959267Z"
+  "test_execution_time": 61000000000,
+  "timestamp": "2026-04-22T09:30:17.634281238Z"
 }
