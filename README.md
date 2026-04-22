@@ -1,7 +1,6 @@
 # sqlc-gen-template
 
 [![CI](https://github.com/sqlc-contrib/sqlc-gen-template/actions/workflows/ci.yml/badge.svg)](https://github.com/sqlc-contrib/sqlc-gen-template/actions/workflows/ci.yml)
-[![Coverage](.github/octocov/badge.svg)](https://github.com/sqlc-contrib/sqlc-gen-template/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/sqlc-contrib/sqlc-gen-template?include_prereleases)](https://github.com/sqlc-contrib/sqlc-gen-template/releases)
 [![License](https://img.shields.io/github/license/sqlc-contrib/sqlc-gen-template)](LICENSE)
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
