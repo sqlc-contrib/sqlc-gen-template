@@ -1,7 +1,7 @@
 {
   "repository": "sqlc-contrib/sqlc-gen-template",
   "ref": "refs/heads/main",
-  "commit": "ea9dc2e3656d2ce0cad8b54afb326478dac6ce45",
+  "commit": "e1aa1f8aabe4c06efa6285674cb2ee10ca1446fc",
   "coverage": {
     "type": "statement",
     "format": "Go coverage",
@@ -65,14 +65,14 @@
             "start_line": 42,
             "start_col": 35,
             "end_line": 43,
-            "end_col": 26,
+            "end_col": 25,
             "num_stmt": 1,
             "count": 5
           },
           {
             "type": "statement",
             "start_line": 43,
-            "start_col": 26,
+            "start_col": 25,
             "end_line": 45,
             "end_col": 3,
             "num_stmt": 1,
@@ -477,18 +477,18 @@
           {
             "type": "statement",
             "start_line": 138,
-            "start_col": 37,
+            "start_col": 38,
             "end_line": 138,
-            "end_col": 80,
+            "end_col": 81,
             "num_stmt": 1,
             "count": 2
           },
           {
             "type": "statement",
             "start_line": 139,
-            "start_col": 37,
+            "start_col": 38,
             "end_line": 139,
-            "end_col": 80,
+            "end_col": 81,
             "num_stmt": 1,
             "count": 1
           },
@@ -1055,16 +1055,16 @@
             "start_line": 312,
             "start_col": 40,
             "end_line": 315,
-            "end_col": 35,
+            "end_col": 32,
             "num_stmt": 2,
             "count": 20
           },
           {
             "type": "statement",
             "start_line": 315,
-            "start_col": 35,
+            "start_col": 32,
             "end_line": 315,
-            "end_col": 54,
+            "end_col": 51,
             "num_stmt": 1,
             "count": 2
           },
@@ -2243,14 +2243,14 @@
             "start_line": 44,
             "start_col": 50,
             "end_line": 45,
-            "end_col": 28,
+            "end_col": 27,
             "num_stmt": 1,
             "count": 8
           },
           {
             "type": "statement",
             "start_line": 45,
-            "start_col": 28,
+            "start_col": 27,
             "end_line": 47,
             "end_col": 3,
             "num_stmt": 1,
@@ -2611,6 +2611,6 @@
       }
     ]
   },
-  "test_execution_time": 60000000000,
-  "timestamp": "2026-04-21T14:04:33.341497549Z"
+  "test_execution_time": 58000000000,
+  "timestamp": "2026-04-22T09:26:21.318959267Z"
 }
