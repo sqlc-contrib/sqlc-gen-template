@@ -56,14 +56,14 @@ var _ = Describe("Render", func() {
 
 	When("the templates directory is missing", func() {
 		It("returns a stat error", func() {
-			_, err := template.Render(template.Context{TemplatesDir: filepath.Join(dir, "missing")})
+			_, err := template.Render(template.Context{TemplateDir: filepath.Join(dir, "missing")})
 			Expect(err).To(HaveOccurred())
 		})
 	})
 
 	When("the templates directory has no .tmpl files", func() {
 		It("returns a no-templates error", func() {
-			_, err := template.Render(template.Context{TemplatesDir: dir})
+			_, err := template.Render(template.Context{TemplateDir: dir})
 			Expect(err).To(MatchError(ContainSubstring("no .tmpl files")))
 		})
 	})
@@ -76,9 +76,9 @@ var _ = Describe("Render", func() {
 `,
 			})
 			files, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				Options:      map[string]any{"package_name": "db"},
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				Options:     map[string]any{"package_name": "db"},
+				TemplateDir: dir,
 			})
 			Expect(err).NotTo(HaveOccurred())
 			Expect(files).To(HaveLen(1))
@@ -91,13 +91,13 @@ var _ = Describe("Render", func() {
 	When("rendering multiple templates in nested dirs", func() {
 		It("preserves directory structure", func() {
 			write(dir, map[string]string{
-				"models.go.tmpl":              `package x`,
-				"queries/one.sql.tmpl":        `SELECT 1;`,
-				"queries/sub/two.sql.tmpl":    `SELECT 2;`,
+				"models.go.tmpl":           `package x`,
+				"queries/one.sql.tmpl":     `SELECT 1;`,
+				"queries/sub/two.sql.tmpl": `SELECT 2;`,
 			})
 			files, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				TemplateDir: dir,
 			})
 			Expect(err).NotTo(HaveOccurred())
 			names := make([]string, 0, len(files))
@@ -114,9 +114,9 @@ var _ = Describe("Render", func() {
 				"{{ .Options.name }}_models.go.tmpl": `package x`,
 			})
 			files, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				Options:      map[string]any{"name": "user"},
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				Options:     map[string]any{"name": "user"},
+				TemplateDir: dir,
 			})
 			Expect(err).NotTo(HaveOccurred())
 			Expect(files).To(HaveLen(1))
@@ -127,12 +127,12 @@ var _ = Describe("Render", func() {
 	When("a template file starts with underscore", func() {
 		It("is parsed as a partial but not emitted", func() {
 			write(dir, map[string]string{
-				"_header.tmpl":    `// HEADER`,
-				"models.go.tmpl":  `{{ template "_header.tmpl" . }}` + "\npackage x",
+				"_header.tmpl":   `// HEADER`,
+				"models.go.tmpl": `{{ template "_header.tmpl" . }}` + "\npackage x",
 			})
 			files, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				TemplateDir: dir,
 			})
 			Expect(err).NotTo(HaveOccurred())
 			Expect(files).To(HaveLen(1))
@@ -148,8 +148,8 @@ var _ = Describe("Render", func() {
 				"bad.tmpl": `{{ nosuch . }}`,
 			})
 			_, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				TemplateDir: dir,
 			})
 			Expect(err).To(MatchError(ContainSubstring("parse")))
 		})
@@ -161,8 +161,8 @@ var _ = Describe("Render", func() {
 				"out.txt.tmpl": `{{ range .Request.Catalog.Schemas }}{{ range .Tables }}{{ range .Columns }}{{ .Name }}={{ goType . }};{{ end }}{{ end }}{{ end }}`,
 			})
 			files, err := template.Render(template.Context{
-				Request:      sampleRequest(),
-				TemplatesDir: dir,
+				Request:     sampleRequest(),
+				TemplateDir: dir,
 			})
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(files[0].Contents)).To(Equal("id=int32;email=string;"))

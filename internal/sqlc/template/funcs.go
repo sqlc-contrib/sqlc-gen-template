@@ -135,8 +135,8 @@ func camelCase(s string) string {
 	return b.String()
 }
 
-func snakeCase(s string) string     { return strings.Join(splitWords(s), "_") }
-func kebabCase(s string) string     { return strings.Join(splitWords(s), "-") }
+func snakeCase(s string) string      { return strings.Join(splitWords(s), "_") }
+func kebabCase(s string) string      { return strings.Join(splitWords(s), "-") }
 func screamingSnake(s string) string { return strings.ToUpper(snakeCase(s)) }
 
 func upperFirst(s string) string {
@@ -312,7 +312,7 @@ func (w wrap) apply(col *plugin.Column, base string) string {
 func goType(col *plugin.Column) string {
 	base := goBase(col)
 	return wrap{
-		array:    func(s string) string { return "[]" + s },
+		array: func(s string) string { return "[]" + s },
 		nullable: func(s string) string {
 			// Pointer wrap unless the type is already a *pointer/slice/map.
 			if strings.HasPrefix(s, "[]") || strings.HasPrefix(s, "*") || strings.HasPrefix(s, "map[") {

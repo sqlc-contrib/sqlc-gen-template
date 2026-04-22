@@ -14,12 +14,12 @@ import (
 )
 
 var _ = Describe("Generate", func() {
-	It("returns an error when plugin options are missing templates_dir", func() {
+	It("returns an error when plugin options are missing template_dir", func() {
 		req := &plugin.GenerateRequest{
 			PluginOptions: []byte(`{}`),
 		}
 		_, err := sqlc.Generate(context.Background(), req)
-		Expect(err).To(MatchError(ContainSubstring("templates_dir")))
+		Expect(err).To(MatchError(ContainSubstring("template_dir")))
 	})
 
 	It("renders a minimal template end-to-end", func() {
@@ -33,7 +33,7 @@ var _ = Describe("Generate", func() {
 			0o644,
 		)).To(Succeed())
 
-		opts, err := json.Marshal(map[string]any{"templates_dir": dir})
+		opts, err := json.Marshal(map[string]any{"template_dir": dir})
 		Expect(err).NotTo(HaveOccurred())
 
 		req := &plugin.GenerateRequest{

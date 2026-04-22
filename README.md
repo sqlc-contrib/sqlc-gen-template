@@ -23,7 +23,7 @@ partials, and cross-file includes.
 - Runs as a **process plugin** (native binary, reads templates from disk) or a
   **WASM plugin** (sandboxed, no filesystem access — templates must be on disk
   via process mode)
-- Directory walk discovers every `*.tmpl` under `templates_dir`
+- Directory walk discovers every `*.tmpl` under `template_dir`
 - Filename templating — the output path is itself rendered as a template
 - Partials — files whose base name starts with `_` are parsed but not emitted
 - Cross-file `{{ template "name" . }}` includes
@@ -40,7 +40,7 @@ partials, and cross-file includes.
 
 ## Installation
 
-### Process mode (recommended — required for `templates_dir`)
+### Process mode (recommended — required for `template_dir`)
 
 sqlc's WASM sandbox has **no filesystem access**, so reading templates from disk
 requires running the plugin as a native process.
@@ -79,7 +79,7 @@ plugins:
 
 WASM mode is supported for distribution convenience (no local binary needed),
 but because sqlc's WASM sandbox provides no filesystem access, the plugin
-**cannot read template files from disk** in this mode. `templates_dir` will
+**cannot read template files from disk** in this mode. `template_dir` will
 always fail with `EBADF`. Only use WASM mode if you have a use case that does
 not require disk-based templates.
 
@@ -103,7 +103,7 @@ sql:
       - plugin: template
         out: ./gen
         options:
-          templates_dir: ./templates # required
+          template_dir: ./templates # required
           extra: # free-form; surfaced as .Options
             package: db
             emit_json_tags: true
@@ -111,20 +111,20 @@ sql:
 
 | Option          | Type   | Required | Description                                                   |
 | --------------- | ------ | :------: | ------------------------------------------------------------- |
-| `templates_dir` | string |   yes    | Directory (relative to `sqlc.yaml`) walked for `*.tmpl` files |
+| `template_dir` | string |   yes    | Directory (relative to `sqlc.yaml`) walked for `*.tmpl` files |
 | `extra`         | object |    no    | Arbitrary key/value map surfaced to templates as `.Options`   |
 
 Unknown top-level options are rejected.
 
 ## Template discovery & output
 
-- Every file under `templates_dir` with a `.tmpl` suffix is parsed.
+- Every file under `template_dir` with a `.tmpl` suffix is parsed.
 - All templates are loaded into a single template set, so
   `{{ template "some-other-file.tmpl" . }}` works across files.
 - Files whose **base name** starts with `_` are partials — parsed but never
   emitted as output files.
 - For each non-partial template, the output path is computed as the template's
-  path relative to `templates_dir`, with the `.tmpl` suffix stripped. That
+  path relative to `template_dir`, with the `.tmpl` suffix stripped. That
   path is _itself_ executed as a template, so it can depend on `.Options`,
   range contexts, etc.
 
@@ -145,7 +145,7 @@ The root value (`.`) is:
 type Context struct {
     Request      *plugin.GenerateRequest // raw sqlc protobuf
     Options      map[string]any          // the `extra` map from sqlc.yaml
-    TemplatesDir string                  // the resolved templates directory
+    TemplateDir string                  // the resolved templates directory
     SqlcVersion  string                  // hoisted from Request.SqlcVersion
 }
 ```
@@ -282,9 +282,9 @@ type {{ pascalCase .Rel.Name | singular }} struct {
 
 ## Caveats
 
-- **Use process mode for `templates_dir`.** sqlc's WASM sandbox provides no
+- **Use process mode for `template_dir`.** sqlc's WASM sandbox provides no
   filesystem access; `os.Stat` / `filepath.WalkDir` return `EBADF` inside a
-  WASM plugin. `templates_dir` only works when the plugin runs as a native
+  WASM plugin. `template_dir` only works when the plugin runs as a native
   process. See the [Installation](#installation) section.
 - **No `formatter_cmd`.** The plugin cannot spawn subprocesses. Format the
   generated output yourself (`go fmt ./...`, `prettier --write`, `rustfmt`, …).

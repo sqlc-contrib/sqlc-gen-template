@@ -82,9 +82,9 @@ func responseFiles(resp *plugin.GenerateResponse) map[string]string {
 }
 
 // fixtureRequest builds a reusable GenerateRequest mirroring a small
-// postgres schema, then layers templates_dir into PluginOptions.
+// postgres schema, then layers template_dir into PluginOptions.
 func fixtureRequest(templatesDir string, extra map[string]any) *plugin.GenerateRequest {
-	opts := map[string]any{"templates_dir": templatesDir}
+	opts := map[string]any{"template_dir": templatesDir}
 	if extra != nil {
 		opts["extra"] = extra
 	}
@@ -153,9 +153,9 @@ var _ = Describe("Plugin binary", func() {
 		Entry("language helpers", "language-helpers", nil),
 	)
 
-	It("exits non-zero on missing templates_dir", func() {
+	It("exits non-zero on missing template_dir", func() {
 		req := &plugin.GenerateRequest{PluginOptions: []byte(`{}`)}
 		out := runPluginExpectErr(req)
-		Expect(out).To(ContainSubstring("templates_dir"))
+		Expect(out).To(ContainSubstring("template_dir"))
 	})
 })

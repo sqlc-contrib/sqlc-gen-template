@@ -15,9 +15,9 @@ const PluginName = "template"
 // Options holds plugin-specific options decoded from the JSON payload
 // that sqlc sends in GenerateRequest.PluginOptions.
 type Options struct {
-	// TemplatesDir is the directory to walk for *.tmpl files. Required.
+	// TemplateDir is the directory to walk for *.tmpl files. Required.
 	// Relative paths resolve against the sqlc configuration directory.
-	TemplatesDir string `json:"templates_dir"`
+	TemplateDir string `json:"template_dir"`
 	// Extra is a free-form map surfaced to templates as .Options.Extra.
 	Extra map[string]any `json:"extra,omitempty"`
 }
@@ -40,8 +40,8 @@ func ParseOptions(data []byte) (Options, error) {
 
 // Validate returns an error if required options are missing.
 func (o Options) Validate() error {
-	if o.TemplatesDir == "" {
-		return fmt.Errorf("plugin option %q is required", "templates_dir")
+	if o.TemplateDir == "" {
+		return fmt.Errorf("plugin option %q is required", "template_dir")
 	}
 	return nil
 }

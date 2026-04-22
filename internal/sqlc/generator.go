@@ -21,7 +21,7 @@ func Generate(_ context.Context, req *plugin.GenerateRequest) (*plugin.GenerateR
 	files, err := template.Render(template.Context{
 		Request:     req,
 		Options:     opts.Extra,
-		TemplatesDir: opts.TemplatesDir,
+		TemplateDir: opts.TemplateDir,
 		SqlcVersion: req.GetSqlcVersion(),
 	})
 	if err != nil {

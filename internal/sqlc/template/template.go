@@ -29,42 +29,42 @@ type Context struct {
 	Request *plugin.GenerateRequest
 	// Options carries the user-supplied free-form extra map from sqlc.yaml.
 	Options map[string]any
-	// TemplatesDir is the absolute or sqlc-relative directory that was
+	// TemplateDir is the absolute or sqlc-relative directory that was
 	// walked to discover templates. Exposed to templates for reference.
-	TemplatesDir string
+	TemplateDir string
 	// SqlcVersion is hoisted from Request.SqlcVersion for convenience.
 	SqlcVersion string
 }
 
-// Render walks ctx.TemplatesDir for *.tmpl files, parses them all into a
+// Render walks ctx.TemplateDir for *.tmpl files, parses them all into a
 // shared template set (so cross-file {{ template }} includes work), then
 // executes every non-partial template against ctx. Output filenames are
-// the template's path relative to TemplatesDir, minus the .tmpl suffix,
+// the template's path relative to TemplateDir, minus the .tmpl suffix,
 // with the resulting string itself executed as a template.
 func Render(ctx Context) ([]*plugin.File, error) {
-	if ctx.TemplatesDir == "" {
-		return nil, fmt.Errorf("templates_dir is empty")
+	if ctx.TemplateDir == "" {
+		return nil, fmt.Errorf("template_dir is empty")
 	}
-	info, err := os.Stat(ctx.TemplatesDir)
+	info, err := os.Stat(ctx.TemplateDir)
 	if err != nil {
-		return nil, fmt.Errorf("stat templates_dir %q: %w", ctx.TemplatesDir, err)
+		return nil, fmt.Errorf("stat template_dir %q: %w", ctx.TemplateDir, err)
 	}
 	if !info.IsDir() {
-		return nil, fmt.Errorf("templates_dir %q is not a directory", ctx.TemplatesDir)
+		return nil, fmt.Errorf("template_dir %q is not a directory", ctx.TemplateDir)
 	}
 
-	paths, err := discover(ctx.TemplatesDir)
+	paths, err := discover(ctx.TemplateDir)
 	if err != nil {
 		return nil, err
 	}
 	if len(paths) == 0 {
-		return nil, fmt.Errorf("no %s files found under %q", Extension, ctx.TemplatesDir)
+		return nil, fmt.Errorf("no %s files found under %q", Extension, ctx.TemplateDir)
 	}
 
 	funcs := FuncMap()
 	root := template.New("").Funcs(funcs)
 	for _, p := range paths {
-		body, err := os.ReadFile(filepath.Join(ctx.TemplatesDir, p))
+		body, err := os.ReadFile(filepath.Join(ctx.TemplateDir, p))
 		if err != nil {
 			return nil, fmt.Errorf("read %q: %w", p, err)
 		}

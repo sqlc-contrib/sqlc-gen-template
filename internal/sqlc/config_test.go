@@ -9,19 +9,19 @@ import (
 
 var _ = Describe("ParseOptions", func() {
 	When("the payload is empty", func() {
-		It("fails validation because templates_dir is required", func() {
+		It("fails validation because template_dir is required", func() {
 			opts, err := sqlc.ParseOptions(nil)
 			Expect(err).To(HaveOccurred())
-			Expect(opts.TemplatesDir).To(BeEmpty())
+			Expect(opts.TemplateDir).To(BeEmpty())
 		})
 	})
 
 	When("the payload is valid JSON", func() {
-		It("decodes templates_dir and extra", func() {
-			data := []byte(`{"templates_dir":"./templates","extra":{"package_name":"db","emit_json_tags":true}}`)
+		It("decodes template_dir and extra", func() {
+			data := []byte(`{"template_dir":"./templates","extra":{"package_name":"db","emit_json_tags":true}}`)
 			opts, err := sqlc.ParseOptions(data)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(opts.TemplatesDir).To(Equal("./templates"))
+			Expect(opts.TemplateDir).To(Equal("./templates"))
 			Expect(opts.Extra).To(HaveKeyWithValue("package_name", "db"))
 			Expect(opts.Extra).To(HaveKeyWithValue("emit_json_tags", true))
 		})
@@ -29,17 +29,17 @@ var _ = Describe("ParseOptions", func() {
 
 	When("the payload has an unknown field", func() {
 		It("rejects it to catch typos", func() {
-			data := []byte(`{"templates_dir":"./t","unknown":1}`)
+			data := []byte(`{"template_dir":"./t","unknown":1}`)
 			_, err := sqlc.ParseOptions(data)
 			Expect(err).To(HaveOccurred())
 		})
 	})
 
-	When("templates_dir is missing", func() {
+	When("template_dir is missing", func() {
 		It("fails validation", func() {
 			data := []byte(`{"extra":{"k":"v"}}`)
 			_, err := sqlc.ParseOptions(data)
-			Expect(err).To(MatchError(ContainSubstring("templates_dir")))
+			Expect(err).To(MatchError(ContainSubstring("template_dir")))
 		})
 	})
 
