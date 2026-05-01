@@ -20,7 +20,7 @@
           inherit version;
           src = pkgs.lib.cleanSource ./.;
           subPackages = [ "cmd/sqlc-gen-template" ];
-          vendorHash = "sha256-Xc+AVFZQfYz1mf8+zpIgeTppB6p22x0+20JiHnv2qgE=";
+          vendorHash = "sha256-aHwJh5ZtNUb7QSRnw1mN/RAnrATnLSsm+N8fTyAYwEE=";
           meta = with pkgs.lib; {
             description = "sqlc plugin that renders code from Go templates";
             license = licenses.mit;
