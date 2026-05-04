@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.0...v0.2.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* **ci:** remove blank lines and upgrade macos runner to macos-15 ([2f61aab](https://github.com/sqlc-contrib/sqlc-gen-template/commit/2f61aab5fe0efdcb772c2970bb39cdb66af2ccd2))
+
 ## [0.2.0](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.1.2...v0.2.0) (2026-04-22)
 
 
