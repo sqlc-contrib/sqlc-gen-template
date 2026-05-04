@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.1...v0.2.2) (2026-05-04)
+
+
+### Bug Fixes
+
+* **github:** correct action versions in update.yml ([4b56207](https://github.com/sqlc-contrib/sqlc-gen-template/commit/4b562079a50bf852602a9dd91f9b5514779a6b49))
+
 ## [0.2.1](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.0...v0.2.1) (2026-05-04)
 
 
