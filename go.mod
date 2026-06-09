@@ -9,7 +9,7 @@ tool (
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
-	github.com/go-openapi/inflect v0.21.5
+	github.com/go-openapi/inflect v0.21.6
 	github.com/onsi/ginkgo/v2 v2.29.0
 	github.com/onsi/gomega v1.41.0
 	github.com/sqlc-dev/plugin-sdk-go v1.23.0
