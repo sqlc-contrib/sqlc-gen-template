@@ -10,10 +10,10 @@ tool (
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/go-openapi/inflect v1.0.0
-	github.com/onsi/ginkgo/v2 v2.32.0
+	github.com/onsi/ginkgo/v2 v2.32.1
 	github.com/onsi/gomega v1.42.1
 	github.com/sqlc-dev/plugin-sdk-go v1.23.0
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/protobuf v1.36.12
 )
 
 require (
