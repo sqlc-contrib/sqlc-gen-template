@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.2...v0.2.3) (2026-09-24)
+
+
+### Bug Fixes
+
+* **flake:** update vendorHash for the bumped go modules ([#48](https://github.com/sqlc-contrib/sqlc-gen-template/issues/48)) ([d91da58](https://github.com/sqlc-contrib/sqlc-gen-template/commit/d91da589aeb14d3a03bf9c47dc744d226f805de5))
+
 ## [0.2.2](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.1...v0.2.2) (2026-05-04)
 
 
