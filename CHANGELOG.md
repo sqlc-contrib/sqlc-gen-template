@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.3...v0.3.0) (2026-11-07)
+
+
+### Features
+
+* **ci:** push the Nix build to Cachix, and merge with the App token ([#61](https://github.com/sqlc-contrib/sqlc-gen-template/issues/61)) ([4823edd](https://github.com/sqlc-contrib/sqlc-gen-template/commit/4823eddeb056eb8b3a0a5e7d5c0cae582b3cc7dc))
+
 ## [0.2.3](https://github.com/sqlc-contrib/sqlc-gen-template/compare/v0.2.2...v0.2.3) (2026-09-24)
 
 
